@@ -2,7 +2,7 @@
 title: "Developing Data Products Week2 Assignment"
 author: "Toshiyuki Tachibana"
 date: "2017-1-22"
-output: pdf_document
+output: html_document
 ---
 
 ```{r}
