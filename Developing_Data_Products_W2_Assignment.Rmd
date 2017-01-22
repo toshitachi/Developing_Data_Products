@@ -1,0 +1,31 @@
+---
+title: "Developing Data Products Week2 Assignment"
+author: "Toshiyuki Tachibana"
+date: "2017-1-22"
+output: html_document
+---
+
+```{r}
+library(leaflet)
+```
+
+##Data##
+
+The data for this work is hospital data provided by National Land Numerical Information Download Service which covers all hospitals in Japan.As the number of the hospials in Japan is too many to plot, I narrowed the data into those in Kanagawa Prefecture.
+
+```{r}
+setwd("C:/Users/Tachibana/Documents/GitHub/Developing_Data_Products")
+data<-read.csv("JPNHopsKanagawaOnly.csv")
+names(data)
+                
+HospLatLong<-data.frame(lat=data[-1,17],lng=data[-1,18])
+
+HospLatLong %>% 
+  leaflet() %>%
+  addTiles() %>%
+  addCircleMarkers()
+```
+
+
+
+
