@@ -1,0 +1,87 @@
+---
+title: "Developing Data Products Final Assignment"
+author: "Toshiyuki Tachibana"
+date: "January 28, 2017"
+output:
+  slidy_presentation: default
+  ioslides_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Prediction of Horsepower by Displacement of the car
+
+This application predicts the horsepower of a car given the displacement (cu.in) of the car.
+
+The data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973:74 models).
+
+## ui.R
+
+```{r}
+library(shiny)
+
+# Define UI for application that draws a histogram
+shinyUI(fluidPage(
+  
+  # Application title
+  titlePanel("Predict Hoursepower from Displacement "),
+  
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(
+    sidebarPanel(
+       sliderInput("sliderDisplacement",
+                   "What is the Displacement of the car?",
+                   min = 50,
+                   max = 500,
+                   value = 100)
+    ),
+    
+    # Show a plot of the generated distribution
+    mainPanel(
+       plotOutput("plot1"),
+       h3("Predicted Horsepower by Displacement"),
+       textOutput("pred1")
+    )
+  )
+  ))
+```
+
+## server.R
+
+```{r}
+library(shiny)
+
+data(mtcars)
+
+# Define server logic required to draw a histogram
+shinyServer(function(input, output) {
+   model1 <-lm(hp ~ disp, data = mtcars)
+   model1pred <- reactive({
+     dispInput <- input$sliderDisplacement
+     predict(model1, newdata = data.frame(disp = dispInput))
+})
+
+   output$plot1 <- renderPlot({
+     dispInput <- input$sliderDisplacement
+     
+     plot(mtcars$disp, mtcars$hp, xlab = "Displacement", 
+          ylab = "Horsepower", bty = "n", pch = 50,
+          xlim = c(0, 500), ylim = c(0, 350),
+          abline(model1, col = "red", lwd = 2))
+    legend(25, 250,"Model 1 Prediction", pch = 16, 
+          col = "red", bty = "n", cex = 1.2)
+    points(dispInput, model1pred(), col = "red", pch = 16, cex = 2)
+    
+})     
+
+  
+   output$pred1 <- renderText({
+     model1pred()
+})
+   
+
+})
+```
+

@@ -1,12 +1,13 @@
 ---
 title: "Developing Data Products Week2 Assignment"
 author: "Toshiyuki Tachibana"
-date: "2017-1-22"
-output: html_document
+date: 'January 22, 2017'
+output: pdf_document
 ---
 
 ```{r}
 library(leaflet)
+library(rmarkdown)
 ```
 
 ##Data##
